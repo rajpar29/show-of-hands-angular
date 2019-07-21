@@ -1,0 +1,17 @@
+<form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+  <div fxLayout="row">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <input matInput placeholder="Username" formControlName="username">
+      <mat-label>Username</mat-label>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row">
+    <mat-form-field class="example-full-width" appearance="outline">
+      <input matInput placeholder="Password" type="password" formControlName="password">
+      <mat-label>Password</mat-label>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row">
+    <button mat-raised-button  type="submit" color="primary" [disabled]="!loginFormGroup.valid">Login</button>
+  </div>
+</form>

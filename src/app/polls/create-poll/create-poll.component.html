@@ -1,0 +1,43 @@
+<div class="container">
+
+    <form [formGroup]="createPollFormGroup" (ngSubmit)="onSubmit()" class="createForm">
+        <div fxLayout="row">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <input matInput placeholder="Title" formControlName="title">
+                <mat-label>Title</mat-label>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row">
+            <mat-form-field class="example-full-width" appearance="outline">
+                <input matInput placeholder="Password" formControlName="description">
+                <mat-label>Description</mat-label>
+            </mat-form-field>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="start start">
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <mat-form-field class="example-full-width" appearance="outline">
+                    <input matInput placeholder="Add Atleast 2 Options" formControlName="options">
+                    <mat-label>Options</mat-label>
+                </mat-form-field>
+            </div>
+            <div>
+                <mat-chip-list>
+                    <mat-chip *ngFor="let option of optionList; let i = index" color="accent" selected>{{option.optionName}}
+                            <mat-icon matChipRemove (click)="removeOption(i)">cancel</mat-icon>
+                    </mat-chip>
+                </mat-chip-list>
+            </div>
+            <div fxLayout="column" fxLayoutAlign="start start">
+                <button mat-raised-button type="button" color="primary" (click)="addCateg()"> Add</button>
+            </div>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="center center">
+            <button mat-raised-button type="submit" color="primary" [disabled]="!createPollFormGroup.valid"
+                style="margin-top: 30px">Login</button>
+        </div>
+
+    </form>
+
+</div>
