@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,39 +9,37 @@ export class UserService {
   constructor(private http: HttpClient) { }
 
   async userLogin(username: string, password: string) {
-
     let body = new HttpParams();
     body = body.set('username', username);
     body = body.set('password', password);
-    var isLoggedin: boolean = false;
 
-    // var response = 
-    return this.http.post("http://localhost:8091/users/userLogin", 
-                                        body, 
-                                        { observe: 'response', responseType: 'text', withCredentials: true }
-                                        ).toPromise();
+    let response = await this.http.post("http://192.168.43.95:8091/users/userLogin", body, { observe: 'response', responseType: 'text', withCredentials: true });
+    return response.toPromise().catch(err=>{
+      return new HttpResponse({status:401,body:"Error Logging in"});
+    });;
+    
+  }
 
-    // response.subscribe((response) => {
-    //   console.log(response);
-    //   debugger
-    //   console.log(response.headers.keys());
-    //   console.log(response.status);
-      
-    //   if (response.status == 201 || response.status == 200) {
-        
-    //     var token = response.headers.get("authorization");
-    //     localStorage.setItem("login_token", token);
-    //     isLoggedin = true;
-    //     console.log("200" );
+  async signUp(username: string, password: string) {
+    let body = new HttpParams();
+    body = body.set('username', username);
+    body = body.set('password', password);
 
-    //   }
-    //   else {
-    //     isLoggedin = false;
+    let response = await this.http.post("http://192.168.43.95:8091/users/createUser", body, { observe: 'response', responseType: 'text', withCredentials: true });
+    return response.toPromise().catch(err=>{
+      return new HttpResponse({status:500,body:"Error Creating"});
+    });
+    
+  }
 
-    //   }
-    // });
-    // console.log("USER SERVICE: " + isLoggedin);
+  async getUserDetails(){
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', localStorage.getItem("login_token"));
+    let response = await this.http.get("http://192.168.43.95:8091/users/getUserDetail",{headers: headers} );
+    return response.toPromise();
+  }
 
-    // return isLoggedin;
+  logout(){
+    localStorage.removeItem("login_token");
   }
 }

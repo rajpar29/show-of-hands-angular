@@ -1,0 +1,145 @@
+<div *ngIf="!poll">
+  <mat-spinner></mat-spinner>
+</div>
+
+<div *ngIf="!poll">
+  <mat-spinner></mat-spinner>
+</div>
+
+<mat-card class="example-card mat-elevation-z8" *ngIf="poll">
+  <div
+    fxLayout="row"
+    fxLayoutAlign="start start"
+    fxLayoutGap="gappx"
+    fxLayoutAlign="space-between start"
+  >
+    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
+      <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
+        <div mat-card-avatar class="example-header-image"></div>
+      </div>
+      <div
+        fxLayout="column"
+        fxLayoutAlign="center start"
+        fxLayoutGap="gappx"
+        class="card-title"
+      >
+        <mat-card-title>{{ poll.title }}</mat-card-title>
+        <mat-card-subtitle>{{ poll.username }}</mat-card-subtitle>
+      </div>
+    </div>
+  </div>
+  <mat-card-content>
+    <p>{{ poll.description }}</p>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+      <div *ngFor="let option of poll.options" class="option-button">
+        <button
+          mat-stroked-button
+          *ngIf="!optionSelectedDetails(option.optionName, i)"
+          (click)="selectOption(option, i)"
+        >
+          {{ option.optionName }}
+        </button>
+        <button
+          mat-raised-button
+          *ngIf="optionSelectedDetails(option.optionName, i)"
+          color="primary"
+          (click)="selectOption(option, i)"
+        >
+          {{ option.optionName }}
+        </button>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <div
+      fxLayout="row"
+      fxLayoutAlign="space-between center"
+      fxLayoutGap="gappx"
+    >
+      <button mat-button (click)="pollDetails(i)">
+        {{ poll.comments.length }} Comment
+      </button>
+      <div>
+        <button mat-button (click)="upvote(i)">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            [ngClass]="upvoteDownvoteColor(true)"
+            >arrow_upward</mat-icon
+          >
+        </button>
+        {{ upvoteDownvoteDiff(i) }}
+        <button mat-button (click)="downvote(i)">
+          <mat-icon
+            aria-hidden="false"
+            aria-label="Example home icon"
+            [ngClass]="upvoteDownvoteColor(false)"
+            >arrow_downward</mat-icon
+          >
+        </button>
+      </div>
+    </div>
+  </mat-card-actions>
+</mat-card>
+
+<mat-card class="example-card mat-elevation-z8">
+  <mat-card-content>
+    <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="gappx">
+      <button
+        mat-stroked-button
+        style="border-color: blue"
+        (click)="resultViewSwitch()"
+      >
+        <span *ngIf="!isResultVisible" >Show Result</span>
+        <span *ngIf="isResultVisible">Hide Result</span>
+        
+      </button>
+    </div>
+    <div *ngIf="poll && isResultVisible">
+      <div *ngFor="let option of poll.options;let i=index;">
+        <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="gappx">
+          <mat-progress-bar
+            mode="determinate"
+            [value]="pollPercent(poll.options, i)"
+            class="result-bar"
+          ></mat-progress-bar><p>{{pollPercent(poll.options, i)}}%</p>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="example-card mat-elevation-z8">
+  <mat-card-content>
+    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+      <mat-form-field appearance="outline" style="width: 100%">
+        <input
+          matInput
+          placeholder="Comment"
+          [formControl]="commentFormControl"
+        />
+        <mat-label>Add Comment</mat-label>
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="addComment()"
+          [disabled]="commentFormControl.value.length == 0"
+        >
+          <mat-icon>add_comment</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
+    <mat-list *ngIf="poll">
+      <mat-list-item *ngFor="let comment of poll.comments">
+        <p mat-line class="comment-username">u/ {{ comment.username }}</p>
+        <p mat-line class="comment-content">{{ comment.comment }}</p>
+        <mat-divider></mat-divider>
+      </mat-list-item>
+
+      <p *ngIf="poll.comments.length == 0">
+        No comments yet, be first to add one.
+      </p>
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+

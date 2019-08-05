@@ -3,6 +3,11 @@
     margin: 20px;
 }
 
-.createForm{
-    width: 80%;
+mat-form-field{
+  width: 75%;  
 }
+ .fill-remaining-space {
+    /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+    flex: 1 1 auto;
+  }

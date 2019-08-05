@@ -1,79 +1,118 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { PollsService } from '../services/polls.service';
+import { Component, OnInit } from "@angular/core";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Router } from "@angular/router";
+import { PollsService } from "../services/polls.service";
+import { UserService } from "../services/user.service";
 
 @Component({
-  selector: 'app-polls',
-  templateUrl: './polls.component.html',
-  styleUrls: ['./polls.component.css']
+  selector: "app-polls",
+  templateUrl: "./polls.component.html",
+  styleUrls: ["./polls.component.css"]
 })
 export class PollsComponent implements OnInit {
+  currentUser: any;
 
-  constructor(private http: HttpClient,
+  tempTest = ['button', 'button13', 'buttotnsadf1'];  
+
+  constructor(
+    private http: HttpClient,
     private router: Router,
-    private pollsServcie: PollsService
-  ) { }
+    private pollService: PollsService,
+    private userService: UserService
+  ) {}
   pollList = [];
 
   ngOnInit() {
-    this.pollsServcie.getPolls().then((polls) => {
-      this.pollList = polls;
+    this.userService.getUserDetails().then(user => {
+      this.currentUser = user;
+      this.pollService.getPolls().then(polls => {
+        this.pollList = polls;
+      });
     });
-    //this.fetchPolls()
-  }
-
-  async fetchPolls() {
-    // let headers = new HttpHeaders();
-    // headers = headers.set('Authorization', localStorage.getItem("login_token"));
-    // console.log("in poll" + headers.get("Authorization"));
-
-    // var response = await this.http.get("http://localhost:8091/polls/allPolls", {headers : headers});
-    // response.subscribe((response) => {
-
-    //   console.log(response);
-    //   for(var pollIndex in response){
-    //     console.log(response[pollIndex]);        
-    //     this.pollList.push(response[pollIndex]);
-    //   }
-
-    // })
   }
 
   upvoteDownvoteDiff(index: number) {
-    return (this.pollList[index].upvotes - this.pollList[index].downvotes);
+    return this.pollList[index].upvotes - this.pollList[index].downvotes;
   }
 
   async upvote(index: number) {
-    let headers = new HttpHeaders();
-    headers = headers.set('Authorization', localStorage.getItem("login_token"));
-    var response = await this.http.get("http://localhost:8091/polls/upvote/" + this.pollList[index]._id, { headers: headers });
-    response.subscribe((response) => {
-
-      console.log(response);
-      this.pollList[index] = response;
-
+    this.pollService.upvote(this.pollList[index]._id).then(updatedPoll => {
+      this.pollList[index] = updatedPoll;
     });
   }
 
   async downvote(index: number) {
-    let headers = new HttpHeaders();
-    headers = headers.set('Authorization', localStorage.getItem("login_token"));
-    var response = await this.http.get("http://localhost:8091/polls/downvote/" + this.pollList[index]._id, { headers: headers });
-    response.subscribe((response) => {
-      console.log(response);
-      this.pollList[index] = response;
-
+    this.pollService.downvote(this.pollList[index]._id).then(updatedPoll => {
+      this.pollList[index] = updatedPoll;
     });
   }
 
+  upvoteDownvoteColor(index: number, isUpvoteButton: boolean) {
+    let color = this.ifUserUpvotedOrDownvoted(index, isUpvoteButton);
+    return color;
+  }
+
+  ifUserUpvotedOrDownvoted(index, isUpvoteButton: boolean) {
+    let poll = this.pollList[index];
+    let userVote = poll.upvoteOrDownvotedBy.find(
+      x => this.currentUser.username === x.username
+    );
+    if (userVote) {
+      if (userVote.upvoted) {
+        // user upvoted
+        if (isUpvoteButton) {
+          /// Check the button to return color for
+          return "material-icons color_red"; // user upvoted retrurn red for upvote button
+        } else {
+          return "material-icons color_grey"; // // user upvoted retrurn grey for downvote button
+        }
+      } else {
+        // user downvoted
+        if (isUpvoteButton) {
+          return "material-icons color_grey"; // user downvoted retrurn grey for upvote button
+        }
+        else{
+          return "material-icons color_blue"; // user downvoted retrurn blue for downvote button
+        }
+      }
+    } else {
+      return "material-icons color_grey"; // No vote from user
+    }
+  }
+
+  pollDetails(index: number) {
+    this.router.navigate(["/polls/details/", this.pollList[index]._id]);
+  }
+
   logout() {
-    localStorage.removeItem("login_token");
-    this.router.navigate(['userLogin']);
+    this.userService.logout();
+    this.router.navigate(["userLogin"]);
   }
 
   createPoll() {
-    this.router.navigate(['polls/create']);
+    this.router.navigate(["polls/create"]);
+  }
 
+  optionSelectedDetails(optionButton: String, index: number) {
+    let optionChoose = this.pollList[index].optionChoosen.find(
+      x => x.username === this.currentUser.username
+    );
+    if (optionChoose == null) {
+      return false;
+    } else {
+      if (optionChoose.optionName === optionButton) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+  selectOption(option, index: number) {
+    this.pollService
+      .chooseOption(option, this.pollList[index]._id)
+      .then(response => {
+        this.pollList[index] = response.body;
+      });
   }
 }

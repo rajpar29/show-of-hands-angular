@@ -12,11 +12,19 @@ import { PollsComponent } from './polls/polls.component';
 import { CookieService } from 'ngx-cookie-service';
 import { CreatePollComponent } from './polls/create-poll/create-poll.component';
 import { MatChipsModule } from '@angular/material';
+import { PollDetailsComponent } from './polls/poll-details/poll-details.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { SignUpComponent } from './sign-up/sign-up.component';
 
 const appRoutes: Routes = [
   {
     path: 'userLogin',
     component: LoginComponent
+  },
+
+  {
+    path: 'register',
+    component: SignUpComponent
   },
 
   {
@@ -26,6 +34,10 @@ const appRoutes: Routes = [
   {
     path: 'polls/create',
     component: CreatePollComponent
+  },
+  {
+    path: 'polls/details/:pollId',
+    component: PollDetailsComponent
   }
 ];
 
@@ -34,7 +46,9 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     PollsComponent,
-    CreatePollComponent
+    CreatePollComponent,
+    PollDetailsComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -43,8 +57,9 @@ const appRoutes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    FlexLayoutModule,
 
-    MatChipsModule,
+
     
     RouterModule.forRoot(appRoutes),
   ],

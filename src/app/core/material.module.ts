@@ -3,8 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
-  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule
+  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatChipsModule, MatSnackBar, MatSnackBarModule, MatGridListModule, MatListModule, MatProgressBarModule
 } from '@angular/material';
+
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { FormsModule } from '@angular/forms';
 
 @NgModule({
@@ -19,8 +22,15 @@ import { FormsModule } from '@angular/forms';
     MatTableModule,
     MatMenuModule,
     MatIconModule,
+    MatChipsModule,
     MatProgressSpinnerModule,
-    FormsModule
+    FormsModule,
+    MatSnackBarModule,
+    MatGridListModule,
+    MatListModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+    FlexLayoutModule
   ],
   exports: [
     CommonModule,
@@ -32,8 +42,16 @@ import { FormsModule } from '@angular/forms';
     MatTableModule,
     MatMenuModule,
     MatIconModule,
+    MatChipsModule,
     MatProgressSpinnerModule,
-    FormsModule
+    FormsModule,
+    MatSnackBarModule,
+    MatGridListModule,
+    MatListModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
+    FlexLayoutModule
   ],
+  providers: []
 })
 export class MaterialModule { }

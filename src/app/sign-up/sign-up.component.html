@@ -1,13 +1,13 @@
 <mat-toolbar class="mat-elevation-z2" color="primary">
-  <span>Login</span>
+  <span>Sign Up</span>
   <span class="fill-remaining-space"></span>
-  <button mat-stroked-button (click)="signup()">
-    <mat-icon>person_add</mat-icon> Sign Up
+  <button mat-stroked-button (click)="login()">
+    <mat-icon>fingerprint</mat-icon> Login
   </button>
 </mat-toolbar>
 
 <div fxLayout="column" fxLayoutAlign="center center" fxLayoutGap="gappx">
-  <form [formGroup]="loginFormGroup" (ngSubmit)="onSubmit()">
+  <form [formGroup]="signUpFormGroup" (ngSubmit)="onSubmit()">
     <div fxLayout="row" fxLayoutAlign="center center">
       <mat-form-field class="example-full-width" appearance="outline">
         <input matInput placeholder="Username" formControlName="username" />
@@ -30,9 +30,9 @@
         mat-raised-button
         type="submit"
         color="primary"
-        [disabled]="!loginFormGroup.valid"
+        [disabled]="!signUpFormGroup.valid"
       >
-        Login
+        Sign Up
       </button>
     </div>
   </form>

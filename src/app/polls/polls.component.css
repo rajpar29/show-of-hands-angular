@@ -1,19 +1,33 @@
 .example-card {
-    max-width: 700px;
-    margin: 20px;
-  }
-  
-  .example-header-image {
-    background-image: url('https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png');
-    background-size: cover;
-  }
-  .fill-remaining-space {
-    /* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
-    flex: 1 1 auto;
-  }
+  max-width: 700px;
+  margin: 20px;
+}
 
-  .option-button{
-    margin: 10px;
-    max-width: 40px;
-  }
+.example-header-image {
+  background-image: url("https://www.jamf.com/jamf-nation/img/default-avatars/generic-user-purple.png");
+  background-size: cover;
+}
+.fill-remaining-space {
+  /* This fills the remaining space, by using flexbox. 
+       Every toolbar row uses a flexbox row layout. */
+  flex: 1 1 auto;
+}
+
+.option-button {
+  margin: 10px;
+  /* max-width: 40px; */
+}
+
+.material-icons.color_red {
+  color: red;
+}
+.material-icons.color_blue {
+  color: blue;
+}
+.material-icons.color_grey {
+  color: grey;
+}
+
+.card-title{
+  margin-left: 10px;
+}
