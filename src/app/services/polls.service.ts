@@ -8,12 +8,12 @@ export class PollsService {
   pollList: any = [];
   constructor(private http: HttpClient) {}
 
-  async getPolls() {
+  async getPolls(sorting:string) {
     this.pollList = [];
     let headers = new HttpHeaders();
     headers = headers.set("Authorization", localStorage.getItem("login_token"));
     var response = await this.http.get(
-      "http://192.168.43.95:8091/polls/allPolls",
+      "http://192.168.43.95:8091/polls/allPolls/" + sorting,
       { headers: headers }
     );
     response.subscribe(response => {
@@ -69,9 +69,7 @@ export class PollsService {
         headers: headers
       }
     );
-    response.subscribe(response => {
-      console.log(response.body);
-    });
+    return response.toPromise();
   }
 
   async addComment(comment: string, pollId: string) {
@@ -86,7 +84,6 @@ export class PollsService {
       "http://192.168.43.95:8091/polls/makeComment/" + pollId,
       body,
       {
-        // responseType: 'text',
         observe: "response",
         withCredentials: true,
         headers: headers
@@ -113,6 +110,43 @@ export class PollsService {
           // responseType: 'text',
           observe: "response",
           withCredentials: true,
+          headers: headers
+        }
+      );
+      return response.toPromise();
+  }
+
+  async getImage(fileId:string) {
+    let headers = new HttpHeaders();
+    headers = headers.set("Authorization", localStorage.getItem("login_token"));
+    var response = await this.http.get(
+      "http://192.168.43.95:8091/images/getImage/" + fileId,
+      { headers: headers,responseType:'text' }
+    );
+    return response.toPromise();
+  }
+  
+  async uploadImage(file: File){
+    console.log("file NAme in Create Poll :  " + file.name);
+
+    let formData:FormData = new FormData();
+    formData.append('file', file);
+    console.log(formData);
+    
+
+    let headers = new HttpHeaders({
+      Authorization: localStorage.getItem("login_token"),
+      });
+      
+
+      var response = await this.http.post(
+        "http://192.168.43.95:8091/images/save/" ,
+        formData,
+        {
+          
+          observe: "response",
+          withCredentials: true,
+          responseType: 'text',
           headers: headers
         }
       );

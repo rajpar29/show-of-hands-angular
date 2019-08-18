@@ -16,7 +16,7 @@ export class UserService {
     let response = await this.http.post("http://192.168.43.95:8091/users/userLogin", body, { observe: 'response', responseType: 'text', withCredentials: true });
     return response.toPromise().catch(err=>{
       return new HttpResponse({status:401,body:"Error Logging in"});
-    });;
+    });
     
   }
 

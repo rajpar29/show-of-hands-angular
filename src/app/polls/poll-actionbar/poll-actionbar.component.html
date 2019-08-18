@@ -1,0 +1,28 @@
+<div
+        fxLayout="row"
+        fxLayoutAlign="space-between center"
+        fxLayoutGap="gappx"
+      >
+        <button mat-button (click)="pollDetails(i)">
+          {{ poll.comments.length }} Comment
+        </button>
+        <div>
+          <button mat-button (click)="upvote(i)">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              [ngClass]="upvoteDownvoteColor(i, true)"
+              >arrow_upward</mat-icon
+            >
+          </button>
+          {{ upvoteDownvoteDiff(i) }}
+          <button mat-button (click)="downvote(i)">
+            <mat-icon
+              aria-hidden="false"
+              aria-label="Example home icon"
+              [ngClass]="upvoteDownvoteColor(i, false)"
+              >arrow_downward</mat-icon
+            >
+          </button>
+        </div>
+      </div>

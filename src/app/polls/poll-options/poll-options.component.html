@@ -1,0 +1,19 @@
+<div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+        <div *ngFor="let option of poll.options" class="option-button">
+          <button
+            mat-stroked-button
+            *ngIf="!optionSelectedDetails(option.optionName, i)"
+            (click)="selectOption(option, i)"
+          >
+            {{ option.optionName }}
+          </button>
+          <button
+            mat-raised-button
+            *ngIf="optionSelectedDetails(option.optionName, i)"
+            color="primary"
+            (click)="selectOption(option, i)"
+          >
+            {{ option.optionName }}
+          </button>
+        </div>
+      </div>

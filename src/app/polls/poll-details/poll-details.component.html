@@ -30,7 +30,13 @@
   </div>
   <mat-card-content>
     <p>{{ poll.description }}</p>
-    <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
+
+    <app-poll-image [poll]="poll"></app-poll-image>
+    <app-poll-options
+    [poll]="poll"
+    [currentUser]="currentUser"
+  ></app-poll-options>
+    <!-- <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
       <div *ngFor="let option of poll.options" class="option-button">
         <button
           mat-stroked-button
@@ -48,10 +54,10 @@
           {{ option.optionName }}
         </button>
       </div>
-    </div>
+    </div> -->
   </mat-card-content>
   <mat-card-actions>
-    <div
+    <!-- <div
       fxLayout="row"
       fxLayoutAlign="space-between center"
       fxLayoutGap="gappx"
@@ -78,7 +84,12 @@
           >
         </button>
       </div>
-    </div>
+    </div> -->
+   
+    <app-poll-actionbar
+      [poll]="poll"
+      [currentUser]="currentUser"
+    ></app-poll-actionbar>
   </mat-card-actions>
 </mat-card>
 
@@ -90,19 +101,19 @@
         style="border-color: blue"
         (click)="resultViewSwitch()"
       >
-        <span *ngIf="!isResultVisible" >Show Result</span>
+        <span *ngIf="!isResultVisible">Show Result</span>
         <span *ngIf="isResultVisible">Hide Result</span>
-        
       </button>
     </div>
     <div *ngIf="poll && isResultVisible">
-      <div *ngFor="let option of poll.options;let i=index;">
+      <div *ngFor="let option of poll.options; let i = index">
         <div fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="gappx">
           <mat-progress-bar
             mode="determinate"
             [value]="pollPercent(poll.options, i)"
             class="result-bar"
-          ></mat-progress-bar><p>{{pollPercent(poll.options, i)}}%</p>
+          ></mat-progress-bar>
+          <p>{{ pollPercent(poll.options, i) }}%</p>
         </div>
       </div>
     </div>
@@ -142,4 +153,3 @@
     </mat-list>
   </mat-card-content>
 </mat-card>
-

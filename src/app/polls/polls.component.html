@@ -1,6 +1,9 @@
 <mat-toolbar class="mat-elevation-z2" color="primary">
   <span>Show Of Hands</span>
   <span class="fill-remaining-space"></span>
+  <button mat-button [matMenuTriggerFor]="sortingModes">
+    <mat-icon>sort</mat-icon>
+  </button>
   <button mat-button [matMenuTriggerFor]="menu">
     <mat-icon>more_vert</mat-icon>
   </button>
@@ -12,11 +15,25 @@
       <mat-icon>exit_to_app</mat-icon> Logout
     </button>
   </mat-menu>
+
+  <mat-menu #sortingModes="matMenu">
+    <button mat-menu-item (click)="getPolls('desc')">
+      <mat-icon>trending_up</mat-icon>Top
+    </button>
+    <button mat-menu-item (click)="getPolls('time')">
+      <mat-icon>schedule</mat-icon>Latest
+    </button>
+  </mat-menu>
 </mat-toolbar>
 
-<div *ngFor="let poll of pollList; let i = index">
-  <mat-card class="example-card mat-elevation-z8">
-    <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx" fxLayoutAlign="space-between start">
+<div *ngFor="let poll of pollList; let i = index;">
+  <mat-card class="poll-card mat-elevation-z8">
+    <div
+      fxLayout="row"
+      fxLayoutAlign="start start"
+      fxLayoutGap="gappx"
+      fxLayoutAlign="space-between start"
+    >
       <div fxLayout="row" fxLayoutAlign="start start" fxLayoutGap="gappx">
         <div fxLayout="column" fxLayoutAlign="start start" fxLayoutGap="gappx">
           <div mat-card-avatar class="example-header-image"></div>
@@ -28,65 +45,37 @@
           class="card-title"
         >
           <mat-card-title>{{ poll.title }}</mat-card-title>
-          <mat-card-subtitle>{{ poll.username }}</mat-card-subtitle>
+          <mat-card-subtitle
+            >{{ poll.username }}<br />
+            {{ pollCreationTime(i) }}</mat-card-subtitle
+          >
         </div>
       </div>
       <div>
-        <button mat-stroked-button style="border-color: blue" (click)="pollDetails(i)">Show Result</button>
+        <button
+          mat-stroked-button
+          style="border-color: blue"
+          (click)="pollDetails(i)"
+        >
+          Show Result
+        </button>
       </div>
     </div>
 
     <mat-card-content>
       <p>{{ poll.description }}</p>
-      <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="gappx">
-        <div *ngFor="let option of poll.options" class="option-button">
-          <button
-            mat-stroked-button
-            *ngIf="!optionSelectedDetails(option.optionName, i)"
-            (click)="selectOption(option, i)"
-          >
-            {{ option.optionName }}
-          </button>
-          <button
-            mat-raised-button
-            *ngIf="optionSelectedDetails(option.optionName, i)"
-            color="primary"
-            (click)="selectOption(option, i)"
-          >
-            {{ option.optionName }}
-          </button>
-        </div>
-      </div>
+       
+      <app-poll-image [poll]="pollList[i]"></app-poll-image>
+      <app-poll-options
+        [poll]="pollList[i]"
+        [currentUser]="currentUser"
+      ></app-poll-options>
     </mat-card-content>
     <mat-card-actions>
-      <div
-        fxLayout="row"
-        fxLayoutAlign="space-between center"
-        fxLayoutGap="gappx"
-      >
-        <button mat-button (click)="pollDetails(i)">
-          {{ poll.comments.length }} Comment
-        </button>
-        <div>
-          <button mat-button (click)="upvote(i)">
-            <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
-              [ngClass]="upvoteDownvoteColor(i, true)"
-              >arrow_upward</mat-icon
-            >
-          </button>
-          {{ upvoteDownvoteDiff(i) }}
-          <button mat-button (click)="downvote(i)">
-            <mat-icon
-              aria-hidden="false"
-              aria-label="Example home icon"
-              [ngClass]="upvoteDownvoteColor(i, false)"
-              >arrow_downward</mat-icon
-            >
-          </button>
-        </div>
-      </div>
+      <app-poll-actionbar
+        [poll]="pollList[i]"
+        [currentUser]="currentUser"
+      ></app-poll-actionbar>
     </mat-card-actions>
   </mat-card>
 </div>

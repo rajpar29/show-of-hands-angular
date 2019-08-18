@@ -3,6 +3,7 @@ import { ActivatedRoute } from "@angular/router";
 import { PollsService } from "src/app/services/polls.service";
 import { FormControl, Validators } from "@angular/forms";
 import { UserService } from "src/app/services/user.service";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: "app-poll-details",
@@ -15,11 +16,13 @@ export class PollDetailsComponent implements OnInit {
   commentFormControl = new FormControl("");
   currentUser: any;
   isResultVisible: boolean = false;
+  imageVariable: any;
+
 
   constructor(
     private activatedRoute: ActivatedRoute,
     private pollService: PollsService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit() {
@@ -35,57 +38,57 @@ export class PollDetailsComponent implements OnInit {
     });
   }
 
-  upvoteDownvoteDiff(index: number) {
-    return this.poll.upvotes - this.poll.downvotes;
-  }
+  // upvoteDownvoteDiff(index: number) {
+  //   return this.poll.upvotes - this.poll.downvotes;
+  // }
 
-  async upvote(index: number) {
-    this.pollService.upvote(this.poll._id).then(updatedPoll => {
-      this.poll = updatedPoll;
-    });
-  }
+  // async upvote(index: number) {
+  //   this.pollService.upvote(this.poll._id).then(updatedPoll => {
+  //     this.poll = updatedPoll;
+  //   });
+  // }
 
-  async downvote(index: number) {
-    this.pollService.downvote(this.poll._id).then(updatedPoll => {
-      this.poll = updatedPoll;
-    });
-  }
+  // async downvote(index: number) {
+  //   this.pollService.downvote(this.poll._id).then(updatedPoll => {
+  //     this.poll = updatedPoll;
+  //   });
+  // }
 
 
-  upvoteDownvoteColor(isUpvoteButton: boolean) {
-    let color = this.ifUserUpvotedOrDownvoted(isUpvoteButton);
-    return color;
-  }
+  // upvoteDownvoteColor(isUpvoteButton: boolean) {
+  //   let color = this.ifUserUpvotedOrDownvoted(isUpvoteButton);
+  //   return color;
+  // }
 
-  ifUserUpvotedOrDownvoted(isUpvoteButton: boolean) {
-    let poll = this.poll;
-    let userVote = poll.upvoteOrDownvotedBy.find(
-      x => this.currentUser.username === x.username
-    );
-    if (userVote) {
-      if (userVote.upvoted) {
-        // user upvoted
-        if (isUpvoteButton) {
+  // ifUserUpvotedOrDownvoted(isUpvoteButton: boolean) {
+  //   let poll = this.poll;
+  //   let userVote = poll.upvoteOrDownvotedBy.find(
+  //     x => this.currentUser.username === x.username
+  //   );
+  //   if (userVote) {
+  //     if (userVote.upvoted) {
+  //       // user upvoted
+  //       if (isUpvoteButton) {
           
           
-          /// Check the button to return color for
-          return "material-icons color_red"; // user upvoted retrurn red for upvote button
-        } else {
-          return "material-icons color_grey"; // // user upvoted retrurn grey for downvote button
-        }
-      } else {
-        // user downvoted
-        if (isUpvoteButton) {
-          return "material-icons color_grey"; // user downvoted retrurn grey for upvote button
-        }
-        else{
-          return "material-icons color_blue"; // user downvoted retrurn blue for downvote button
-        }
-      }
-    } else {
-      return "material-icons color_grey"; // No vote from user
-    }
-  }
+  //         /// Check the button to return color for
+  //         return "material-icons color_red"; // user upvoted retrurn red for upvote button
+  //       } else {
+  //         return "material-icons color_grey"; // // user upvoted retrurn grey for downvote button
+  //       }
+  //     } else {
+  //       // user downvoted
+  //       if (isUpvoteButton) {
+  //         return "material-icons color_grey"; // user downvoted retrurn grey for upvote button
+  //       }
+  //       else{
+  //         return "material-icons color_blue"; // user downvoted retrurn blue for downvote button
+  //       }
+  //     }
+  //   } else {
+  //     return "material-icons color_grey"; // No vote from user
+  //   }
+  // }
 
 
   // To Add Comment in post
@@ -98,20 +101,20 @@ export class PollDetailsComponent implements OnInit {
   }
 
   // Used to check if user selected an option
-  optionSelectedDetails(optionButton: String) {
-    let optionChoose = this.poll.optionChoosen.find(
-      x => x.username === this.currentUser.username
-    );
-    if (optionChoose == null) {
-      return false;
-    } else {
-      if (optionChoose.optionName === optionButton) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-  }
+  // optionSelectedDetails(optionButton: String) {
+  //   let optionChoose = this.poll.optionChoosen.find(
+  //     x => x.username === this.currentUser.username
+  //   );
+  //   if (optionChoose == null) {
+  //     return false;
+  //   } else {
+  //     if (optionChoose.optionName === optionButton) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   }
+  // }
 
   // Switch Show Result Component
   resultViewSwitch(){
@@ -134,11 +137,9 @@ export class PollDetailsComponent implements OnInit {
   }
 
   // Select an option in Poll
-  selectOption(option) {
-    this.pollService.chooseOption(option, this.pollId).then(response => {
-      this.poll = response.body;
-    });
-  }
-
-
+  // selectOption(option) {
+  //   this.pollService.chooseOption(option, this.pollId).then(response => {
+  //     this.poll = response.body;
+  //   });
+  // }
 }

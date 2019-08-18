@@ -15,6 +15,9 @@ import { MatChipsModule } from '@angular/material';
 import { PollDetailsComponent } from './polls/poll-details/poll-details.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { PollActionbarComponent } from './polls/poll-actionbar/poll-actionbar.component';
+import { PollOptionsComponent } from './polls/poll-options/poll-options.component';
+import { PollImageComponent } from './polls/poll-image/poll-image.component';
 
 const appRoutes: Routes = [
   {
@@ -48,7 +51,10 @@ const appRoutes: Routes = [
     PollsComponent,
     CreatePollComponent,
     PollDetailsComponent,
-    SignUpComponent
+    SignUpComponent,
+    PollActionbarComponent,
+    PollOptionsComponent,
+    PollImageComponent
   ],
   imports: [
     BrowserModule,
